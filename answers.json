@@ -1,0 +1,40 @@
+{
+  "answers": {
+    "easy": [
+      "cat",
+      "dog",
+      "sun",
+      "hat",
+      "run",
+      "map",
+      "pen",
+      "box",
+      "cup",
+      "bed"
+    ],
+    "medium": [
+      "planet",
+      "guitar",
+      "window",
+      "pencil",
+      "garden",
+      "puzzle",
+      "castle",
+      "yellow",
+      "rocket",
+      "bottle"
+    ],
+    "hard": [
+      "butterfly",
+      "chocolate",
+      "telephone",
+      "adventure",
+      "furniture",
+      "backpacks",
+      "dangerous",
+      "champions",
+      "beautiful",
+      "principle"
+    ]
+  }
+}
