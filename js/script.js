@@ -9,20 +9,19 @@ const scoreboard = document.getElementById("scoreboard");
 let difficulty;
 let lifeIcon;
 let currentWord;
-
-const difficultyLengths = { easy: 3, medium: 6, hard: 9 };
+let wordArray;
 
 async function getRandomWordAsArray(level) {
-  const wordLength = difficultyLengths[level];
-
   try {
-    const response = await fetch(
-      `https://random-word-api.herokuapp.com/word?length=${wordLength}&diff=1`
-    );
+    const response = await fetch("./answers.json");
     const data = await response.json();
-    currentWord = data[0];
+    const words = data.answers[level];
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+    currentWord = randomWord;
+    const wordArray = randomWord.split("");
+    return wordArray;
   } catch (error) {
-    console.error("Error fetching random word:", error);
+    console.error("Error loading word list:", error);
   }
 }
 
@@ -37,7 +36,7 @@ setupForm.addEventListener("submit", async (event) => {
     img.src = `./images/live${lifeIcon}.png`;
   });
 
-  await getRandomWord(difficulty);
+  wordArray = await getRandomWordAsArray(difficulty);
 
   overlay.style.display = "none";
 });
