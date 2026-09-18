@@ -12,7 +12,7 @@ let currentWord;
 
 const difficultyLengths = { easy: 3, medium: 6, hard: 9 };
 
-async function getRandomWord(level) {
+async function getRandomWordAsArray(level) {
   const wordLength = difficultyLengths[level];
 
   try {
