@@ -90,3 +90,18 @@ qwerty.addEventListener("click", (event) => {
     handleInteraction(event.target);
   }
 });
+
+document.addEventListener("keydown", (event) => {
+  const letter = event.key.toLowerCase();
+
+  if (!/^[a-z]$/.test(letter)) {
+    return;
+  }
+
+  const keyboardButtons = qwerty.querySelectorAll("button");
+  keyboardButtons.forEach((button) => {
+    if (button.textContent === letter && !button.disabled) {
+      handleInteraction(button);
+    }
+  });
+});
