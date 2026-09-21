@@ -25,6 +25,19 @@ async function getRandomWordAsArray(level) {
   }
 }
 
+function checkLetter(letter) {
+  const letterListItems = word.querySelectorAll(".letter");
+
+  for (const listItem of letterListItems) {
+    if (listItem.textContent === letter) {
+      listItem.classList.add("show");
+      return letter;
+    }
+  }
+
+  return null;
+}
+
 function addWordToDisplay(arr) {
   const wordList = word.querySelector("ul");
 
