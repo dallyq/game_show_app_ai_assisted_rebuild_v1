@@ -38,6 +38,13 @@ function checkLetter(letter) {
   return null;
 }
 
+function removeLife() {
+  missed++;
+
+  const liveImage = scoreboard.querySelector('img[src*="live"]');
+  liveImage.src = liveImage.src.replace("live", "lost");
+}
+
 function addWordToDisplay(arr) {
   const wordList = word.querySelector("ul");
 
