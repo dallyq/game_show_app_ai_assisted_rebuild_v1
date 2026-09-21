@@ -201,6 +201,7 @@ function loadThemeFromLocalStorage() {
 
   if (savedTheme) {
     document.documentElement.dataset.theme = savedTheme;
+    document.getElementById("theme").value = savedTheme;
   }
 }
 
