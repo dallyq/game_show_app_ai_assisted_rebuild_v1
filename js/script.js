@@ -84,3 +84,9 @@ setupForm.addEventListener("submit", async (event) => {
 
   overlay.style.display = "none";
 });
+
+qwerty.addEventListener("click", (event) => {
+  if (event.target.tagName === "BUTTON") {
+    handleInteraction(event.target);
+  }
+});
