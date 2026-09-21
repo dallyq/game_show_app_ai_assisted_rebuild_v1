@@ -2,8 +2,8 @@
 
 ## Created By
 
-- Name:
-- Date Completed:
+- Name: Dallas Gibson
+- Date Completed: 21/09/2026
 
 ---
 
@@ -11,7 +11,7 @@
 
 _List all the AI tools you utilized to complete the project._
 
-- _(AI Tool One)_
+- _(AI Tool One)_ Claude
 - _(AI Tool Two)_
 - _(AI Tool Three)_
 
