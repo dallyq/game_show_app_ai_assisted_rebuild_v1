@@ -10,6 +10,7 @@ let difficulty;
 let lifeIcon;
 let currentWord;
 let wordArray;
+let currentStreak = 0;
 
 async function getRandomWordAsArray(level) {
   try {
@@ -65,9 +66,20 @@ function checkWin() {
   const revealedLetters = word.querySelectorAll(".show").length;
 
   if (revealedLetters === totalLetters) {
+    currentStreak++;
+    localStorage.setItem(`currentStreak_${difficulty}`, currentStreak);
+
+    const bestStreak = Number(localStorage.getItem(`bestStreak_${difficulty}`)) || 0;
+    if (currentStreak > bestStreak) {
+      localStorage.setItem(`bestStreak_${difficulty}`, currentStreak);
+    }
+
     overlay.className = "win";
     overlay.style.display = "flex";
   } else if (missed >= 5) {
+    currentStreak = 0;
+    localStorage.setItem(`currentStreak_${difficulty}`, currentStreak);
+
     overlay.className = "lose";
     overlay.style.display = "flex";
   }
