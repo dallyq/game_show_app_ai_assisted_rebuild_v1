@@ -5,6 +5,8 @@ let missed = 0;
 const overlay = document.getElementById("overlay");
 const setupForm = document.getElementById("setup-form");
 const scoreboard = document.getElementById("scoreboard");
+const winScreen = document.querySelector(".win-screen");
+const loseScreen = document.querySelector(".lose-screen");
 
 let difficulty;
 let lifeIcon;
@@ -61,6 +63,21 @@ function removeLife() {
   liveImage.src = liveImage.src.replace("live", "lost");
 }
 
+function resetKeyboard() {
+  const keyboardButtons = qwerty.querySelectorAll("button");
+  keyboardButtons.forEach((button) => {
+    button.disabled = false;
+    button.classList.remove("chosen");
+  });
+}
+
+function resetScoreboard() {
+  const lifeImages = scoreboard.querySelectorAll("img");
+  lifeImages.forEach((img) => {
+    img.src = `./images/live${lifeIcon}.png`;
+  });
+}
+
 function checkWin() {
   const totalLetters = word.querySelectorAll(".letter").length;
   const revealedLetters = word.querySelectorAll(".show").length;
@@ -69,16 +86,24 @@ function checkWin() {
     currentStreak++;
     localStorage.setItem(`currentStreak_${difficulty}`, currentStreak);
 
-    const bestStreak = Number(localStorage.getItem(`bestStreak_${difficulty}`)) || 0;
+    let bestStreak = Number(localStorage.getItem(`bestStreak_${difficulty}`)) || 0;
     if (currentStreak > bestStreak) {
-      localStorage.setItem(`bestStreak_${difficulty}`, currentStreak);
+      bestStreak = currentStreak;
+      localStorage.setItem(`bestStreak_${difficulty}`, bestStreak);
     }
+
+    const winScreenParagraphs = winScreen.querySelectorAll("p");
+    winScreenParagraphs[0].textContent = `Current Streak: ${currentStreak}`;
+    winScreenParagraphs[1].textContent = `Best Streak: ${bestStreak}`;
 
     overlay.className = "win";
     overlay.style.display = "flex";
   } else if (missed >= 5) {
     currentStreak = 0;
     localStorage.setItem(`currentStreak_${difficulty}`, currentStreak);
+
+    const bestStreak = Number(localStorage.getItem(`bestStreak_${difficulty}`)) || 0;
+    loseScreen.querySelector("p").textContent = `Best Streak: ${bestStreak}`;
 
     overlay.className = "lose";
     overlay.style.display = "flex";
@@ -110,22 +135,46 @@ function addWordToDisplay(arr) {
   });
 }
 
+async function startNewGame() {
+  resetKeyboard();
+  resetScoreboard();
+  missed = 0;
+  word.querySelector("ul").innerHTML = "";
+
+  wordArray = await getRandomWordAsArray(difficulty);
+  addWordToDisplay(wordArray);
+
+  overlay.style.display = "none";
+}
+
+function goToStartScreen() {
+  resetKeyboard();
+  missed = 0;
+  word.querySelector("ul").innerHTML = "";
+  setupForm.reset();
+
+  overlay.className = "start";
+  overlay.style.display = "";
+}
+
 setupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   difficulty = document.getElementById("difficulty").value;
   lifeIcon = document.getElementById("lifeicon").value;
 
-  const lifeImages = scoreboard.querySelectorAll("img");
-  lifeImages.forEach((img) => {
-    img.src = `./images/live${lifeIcon}.png`;
-  });
+  resetScoreboard();
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
 
   overlay.style.display = "none";
 });
+
+winScreen.querySelector(".btn_reset").addEventListener("click", startNewGame);
+loseScreen.querySelector(".btn_reset").addEventListener("click", startNewGame);
+winScreen.querySelector(".btn_home").addEventListener("click", goToStartScreen);
+loseScreen.querySelector(".btn_home").addEventListener("click", goToStartScreen);
 
 qwerty.addEventListener("click", (event) => {
   if (event.target.tagName === "BUTTON") {
