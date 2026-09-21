@@ -45,15 +45,16 @@ async function fetchAndShowDefinition(word) {
 
 function checkLetter(letter) {
   const letterListItems = word.querySelectorAll(".letter");
+  let matchedLetter = null;
 
-  for (const listItem of letterListItems) {
+  letterListItems.forEach((listItem) => {
     if (listItem.textContent === letter) {
       listItem.classList.add("show");
-      return letter;
+      matchedLetter = letter;
     }
-  }
+  });
 
-  return null;
+  return matchedLetter;
 }
 
 function removeLife() {
