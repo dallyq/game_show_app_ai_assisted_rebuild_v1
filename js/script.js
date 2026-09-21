@@ -19,10 +19,21 @@ async function getRandomWordAsArray(level) {
     const randomWord = words[Math.floor(Math.random() * words.length)];
     currentWord = randomWord;
     const wordArray = randomWord.split("");
-    return data;
+    return wordArray;
   } catch (error) {
     console.error("Error loading word list:", error);
   }
+}
+
+function addWordToDisplay(arr) {
+  const wordList = word.querySelector("ul");
+
+  arr.forEach((character) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = character;
+    listItem.classList.add("letter");
+    wordList.appendChild(listItem);
+  });
 }
 
 setupForm.addEventListener("submit", async (event) => {
@@ -37,6 +48,7 @@ setupForm.addEventListener("submit", async (event) => {
   });
 
   wordArray = await getRandomWordAsArray(difficulty);
+  addWordToDisplay(wordArray);
 
   overlay.style.display = "none";
 });
