@@ -45,6 +45,18 @@ function removeLife() {
   liveImage.src = liveImage.src.replace("live", "lost");
 }
 
+function handleInteraction(button) {
+  button.disabled = true;
+  button.classList.add("chosen");
+
+  const letter = button.textContent;
+  const result = checkLetter(letter);
+
+  if (result === null) {
+    removeLife();
+  }
+}
+
 function addWordToDisplay(arr) {
   const wordList = word.querySelector("ul");
 
