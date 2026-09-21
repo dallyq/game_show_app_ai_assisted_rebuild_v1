@@ -174,6 +174,7 @@ async function startNewGame() {
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
+  fetchAndShowDefinition(currentWord);
 
   if (difficulty === "hard") {
     startTimer();
@@ -223,6 +224,7 @@ setupForm.addEventListener("submit", async (event) => {
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
+  fetchAndShowDefinition(currentWord);
 
   if (difficulty === "hard") {
     startTimer();
