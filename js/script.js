@@ -19,7 +19,7 @@ async function getRandomWordAsArray(level) {
     const randomWord = words[Math.floor(Math.random() * words.length)];
     currentWord = randomWord;
     const wordArray = randomWord.split("");
-    return wordArray;
+    return data;
   } catch (error) {
     console.error("Error loading word list:", error);
   }
