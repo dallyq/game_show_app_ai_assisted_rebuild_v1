@@ -45,6 +45,36 @@ function removeLife() {
   liveImage.src = liveImage.src.replace("live", "lost");
 }
 
+function checkWin() {
+  const totalLetters = word.querySelectorAll(".letter").length;
+  const revealedLetters = word.querySelectorAll(".show").length;
+
+  if (revealedLetters === totalLetters) {
+    overlay.innerHTML = `
+      <h2 class="title">You Win!</h2>
+      <p>Current Streak: 1</p>
+      <p>Best Streak: 1</p>
+      <div class="button-container">
+        <button class="btn_reset">Play Again</button>
+        <button class="btn_home">Home</button>
+      </div>
+    `;
+    overlay.className = "win";
+    overlay.style.display = "flex";
+  } else if (missed >= 5) {
+    overlay.innerHTML = `
+      <h2 class="title">You Lose!</h2>
+      <p>Best Streak: 1</p>
+      <div class="button-container">
+        <button class="btn_reset">Try Again</button>
+        <button class="btn_home">Home</button>
+      </div>
+    `;
+    overlay.className = "lose";
+    overlay.style.display = "flex";
+  }
+}
+
 function handleInteraction(button) {
   button.disabled = true;
   button.classList.add("chosen");
@@ -55,6 +85,8 @@ function handleInteraction(button) {
   if (result === null) {
     removeLife();
   }
+
+  checkWin();
 }
 
 function addWordToDisplay(arr) {
