@@ -25,6 +25,21 @@ async function getRandomWordAsArray(level) {
   }
 }
 
+async function fetchAndShowDefinition(word) {
+  const definitionElement = document.getElementById("definition");
+
+  try {
+    const response = await fetch(
+      `https://api.datamuse.com/words?sp=${word}&md=d&max=1`
+    );
+    const data = await response.json();
+    const definition = data[0].defs[0];
+    definitionElement.querySelector("p").textContent = definition;
+  } catch (error) {
+    console.error("Error fetching definition:", error);
+  }
+}
+
 function checkLetter(letter) {
   const letterListItems = word.querySelectorAll(".letter");
 
@@ -50,26 +65,9 @@ function checkWin() {
   const revealedLetters = word.querySelectorAll(".show").length;
 
   if (revealedLetters === totalLetters) {
-    overlay.innerHTML = `
-      <h2 class="title">You Win!</h2>
-      <p>Current Streak: 1</p>
-      <p>Best Streak: 1</p>
-      <div class="button-container">
-        <button class="btn_reset">Play Again</button>
-        <button class="btn_home">Home</button>
-      </div>
-    `;
     overlay.className = "win";
     overlay.style.display = "flex";
   } else if (missed >= 5) {
-    overlay.innerHTML = `
-      <h2 class="title">You Lose!</h2>
-      <p>Best Streak: 1</p>
-      <div class="button-container">
-        <button class="btn_reset">Try Again</button>
-        <button class="btn_home">Home</button>
-      </div>
-    `;
     overlay.className = "lose";
     overlay.style.display = "flex";
   }
