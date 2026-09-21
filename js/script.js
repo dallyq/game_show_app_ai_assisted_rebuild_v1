@@ -35,6 +35,22 @@ async function getRandomWordAsArray(level) {
   }
 }
 
+async function fetchAndShowDefinition(word) {
+  const definitionElement = document.getElementById("definition");
+
+  try {
+    const response = await fetch(
+      `https://api.datamuse.com/words?sp=${word}&md=d&max=1`
+    );
+    const data = await response.json();
+    const rawDefinition = data[0].defs[0];
+    const definition = rawDefinition.split("\t")[1];
+    definitionElement.querySelector("p").textContent = definition;
+  } catch (error) {
+    console.error("Error fetching definition:", error);
+  }
+}
+
 function checkLetter(letter) {
   const letterListItems = word.querySelectorAll(".letter");
   let matchedLetter = null;
@@ -159,6 +175,7 @@ async function startNewGame() {
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
+  fetchAndShowDefinition(currentWord);
 
   if (difficulty === "hard") {
     startTimer();
@@ -208,6 +225,7 @@ setupForm.addEventListener("submit", async (event) => {
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
+  fetchAndShowDefinition(currentWord);
 
   if (difficulty === "hard") {
     startTimer();
