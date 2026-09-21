@@ -158,6 +158,20 @@ function goToStartScreen() {
   overlay.style.display = "";
 }
 
+function saveThemeToLocalStorage(theme) {
+  localStorage.setItem("theme", theme);
+}
+
+function loadThemeFromLocalStorage() {
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme) {
+    document.documentElement.dataset.theme = savedTheme;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadThemeFromLocalStorage);
+
 setupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -166,6 +180,7 @@ setupForm.addEventListener("submit", async (event) => {
 
   const theme = document.getElementById("theme").value;
   document.documentElement.dataset.theme = theme;
+  saveThemeToLocalStorage(theme);
 
   resetScoreboard();
 
