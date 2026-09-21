@@ -164,6 +164,9 @@ setupForm.addEventListener("submit", async (event) => {
   difficulty = document.getElementById("difficulty").value;
   lifeIcon = document.getElementById("lifeicon").value;
 
+  const theme = document.getElementById("theme").value;
+  document.documentElement.dataset.theme = theme;
+
   resetScoreboard();
 
   wordArray = await getRandomWordAsArray(difficulty);
@@ -177,13 +180,25 @@ loseScreen.querySelector(".btn_reset").addEventListener("click", startNewGame);
 winScreen.querySelector(".btn_home").addEventListener("click", goToStartScreen);
 loseScreen.querySelector(".btn_home").addEventListener("click", goToStartScreen);
 
+function isGameActive() {
+  return overlay.style.display === "none";
+}
+
 qwerty.addEventListener("click", (event) => {
+  if (!isGameActive()) {
+    return;
+  }
+
   if (event.target.tagName === "BUTTON") {
     handleInteraction(event.target);
   }
 });
 
 document.addEventListener("keydown", (event) => {
+  if (!isGameActive()) {
+    return;
+  }
+
   const letter = event.key.toLowerCase();
 
   if (!/^[a-z]$/.test(letter)) {
