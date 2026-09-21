@@ -21,17 +21,22 @@ const TOTAL_TIME = 25;
 let timeRemaining;
 let timerInterval;
 
+const DIFFICULTY_WORD_LENGTHS = { easy: 3, medium: 6, hard: 9 };
+
 async function getRandomWordAsArray(level) {
+  const wordLength = DIFFICULTY_WORD_LENGTHS[level];
+
   try {
-    const response = await fetch("./answers.json");
+    const response = await fetch(
+      `https://random-word-api.herokuapp.com/word?length=${wordLength}&diff=1`
+    );
     const data = await response.json();
-    const words = data.answers[level];
-    const randomWord = words[Math.floor(Math.random() * words.length)];
+    const randomWord = data[0];
     currentWord = randomWord;
     const wordArray = randomWord.split("");
     return wordArray;
   } catch (error) {
-    console.error("Error loading word list:", error);
+    console.error("Error fetching random word:", error);
   }
 }
 
