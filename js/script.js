@@ -7,12 +7,17 @@ const setupForm = document.getElementById("setup-form");
 const scoreboard = document.getElementById("scoreboard");
 const winScreen = document.querySelector(".win-screen");
 const loseScreen = document.querySelector(".lose-screen");
+const timer = document.getElementById("timer");
 
 let difficulty;
 let lifeIcon;
 let currentWord;
 let wordArray;
 let currentStreak = 0;
+
+const TOTAL_TIME = 25;
+let timeRemaining;
+let timerInterval;
 
 async function getRandomWordAsArray(level) {
   try {
@@ -79,6 +84,27 @@ function resetScoreboard() {
   });
 }
 
+function startTimer() {
+  clearInterval(timerInterval);
+
+  timeRemaining = TOTAL_TIME;
+  timer.querySelector("p").textContent = timeRemaining;
+
+  timerInterval = setInterval(() => {
+    timeRemaining--;
+    timer.querySelector("p").textContent = timeRemaining;
+
+    if (timeRemaining % 5 === 0) {
+      removeLife();
+      checkWin();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
 function checkWin() {
   const totalLetters = word.querySelectorAll(".letter").length;
   const revealedLetters = word.querySelectorAll(".show").length;
@@ -97,6 +123,7 @@ function checkWin() {
     winScreenParagraphs[0].textContent = `Current Streak: ${currentStreak}`;
     winScreenParagraphs[1].textContent = `Best Streak: ${bestStreak}`;
 
+    stopTimer();
     overlay.className = "win";
     overlay.style.display = "flex";
   } else if (missed >= 5) {
@@ -106,6 +133,7 @@ function checkWin() {
     const bestStreak = Number(localStorage.getItem(`bestStreak_${difficulty}`)) || 0;
     loseScreen.querySelector("p").textContent = `Best Streak: ${bestStreak}`;
 
+    stopTimer();
     overlay.className = "lose";
     overlay.style.display = "flex";
   }
@@ -144,6 +172,12 @@ async function startNewGame() {
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
+
+  if (difficulty === "hard") {
+    startTimer();
+  } else {
+    timer.querySelector("p").textContent = "";
+  }
 
   overlay.style.display = "none";
 }
@@ -186,6 +220,12 @@ setupForm.addEventListener("submit", async (event) => {
 
   wordArray = await getRandomWordAsArray(difficulty);
   addWordToDisplay(wordArray);
+
+  if (difficulty === "hard") {
+    startTimer();
+  } else {
+    timer.querySelector("p").textContent = "";
+  }
 
   overlay.style.display = "none";
 });
